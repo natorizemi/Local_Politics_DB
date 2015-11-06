@@ -1,3 +1,3 @@
 # Local_Politics_DB
 
-[[ファイル:http://i.stack.imgur.com/zLTpo.png|本栖湖から眺めた富士山]]
+![github](http://i.stack.imgur.com/zLTpo.png)
