@@ -1,7 +1,6 @@
 # HOW TO USE GITHUB
 ![CAT](https://pbs.twimg.com/profile_images/378800000246416546/7af5142cba78b0ff27f995365f41672c_400x400.jpeg)
-
-
+___
 
 ### Look at this
 [Git guide url 0](http://rogerdudler.github.io/git-guide/index.ja.html) /
