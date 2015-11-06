@@ -1,6 +1,9 @@
 # HOW TO USE GITHUB
 
-<h2>mechanism</h2>
-![this is area explain](https://git-scm.com/images/about/index1@2x.png)<br><pre>
-<h2>branch and merge</h2>
-![this is merge](https://training.github.com/kit/images/merge-visual.jpg)<br>
+<h2>Look at this</h2>
+![Git guide](http://rogerdudler.github.io/git-guide/index.ja.html)<pre><pre>
+
+<h2>Work flow</h2>
+![this is area explain](http://rogerdudler.github.io/git-guide/img/trees.png)<pre><pre>
+<h2>Branch and merge</h2>
+![this is merge](http://rogerdudler.github.io/git-guide/img/branches.png)<pre><pre>
