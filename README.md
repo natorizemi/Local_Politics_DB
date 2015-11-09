@@ -3,8 +3,9 @@
 ___
 
 ### Look at this
-[Git guide url 0](http://rogerdudler.github.io/git-guide/index.ja.html) /
-[Git guide url 1](http://blog.sixapart.jp/2014-03/mttips-02-what-is-git.html)
+[Git guide url : 0](http://rogerdudler.github.io/git-guide/index.ja.html) /
+[Git guide url : 1](http://blog.sixapart.jp/2014-03/mttips-02-what-is-git.html) /
+[Git guide url : 2](https://git-scm.com/book/ja/v2)
 ___
 
 ### Work flow
