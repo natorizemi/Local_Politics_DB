@@ -1,0 +1,207 @@
+@charset "utf-8";
+/* CSS Document */
+
+html{
+  height:100%;
+}
+
+body{
+  height:100%;
+}
+
+body #wrapper{
+  /*height:100%;*/
+  min-height: 100%;
+}
+
+/* 中央配置 */
+    body {  
+        /*text-align: center;*/ 
+        background-color: black;
+      }
+
+    div#wrapper {  
+        width: 960px;  
+        height:100%;
+        margin: 0 auto;  
+        text-align: left; 
+    }
+
+    /*#color{
+        background: linear-gradient(white, gray);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+    }*/
+
+/* トップ画像 */
+    img.top{
+       width: 270px;
+       height: 80px;
+    }
+
+/* メニュー  */
+    /*#menu{
+      width: 936px;
+      height: 45px;
+    }
+    */
+
+    #menu ul{ 
+       position: relative;
+       left: 50%;
+       float:left;
+       /*
+       margin: 0; 
+       padding: 0; 
+       list-style: none; 
+       */
+    }
+
+    #menu li{ 
+       display:inline;
+       /*
+       padding: 0; 
+       margin: 0; 
+       */
+       position: relative;
+       left: -50%;
+       float:left;
+    }
+
+    #menu li a{
+       display: block; 
+       /*background: url(gazo.gif) no-repeat;*/
+       border-left: 8px solid #C97556;
+       background-color: #474655;
+       padding: 3px 10px;
+       text-decoration: none;
+       color: #E1E2CF;
+       /*
+       width: 100px; 
+       */
+       width: 170px;
+       /*
+       margin: 0px 0px 2px 0px;
+       */
+       /*
+       padding: 4px;
+       */
+       padding: 7px;
+       /*
+       text-align: center;
+       */
+       font-size: 16px;
+    }
+
+    #menu li a:hover{
+       border-left: 8px solid #990033;
+       background-color: #474655;
+       display: block; 
+       text-decoration: underline;
+    }
+
+
+/*カルーセル */
+    * {
+      margin:0;
+      padding:0;
+    }
+    #carouselWrap {
+      margin:50px auto;
+      /*margin:100px auto;*/
+      /*
+      width:620px;
+      height:150px;
+      */
+      width:900px;
+      height:300px;
+      padding:5px;
+      background:url(../img/background.gif);
+      background-color: black;
+      position:relative;
+    }
+
+    #carouselPrev {
+      position:absolute;
+      /*top:65px;*/
+      top:150px;
+      left:-8px;
+      cursor:pointer;
+    }
+
+    #carouselNext {
+      position:absolute;
+      /*top:65px;*/
+      top:150px;
+      right:-8px;
+      cursor:pointer;
+    }
+
+    #carouse {
+      width:100%;
+      height:100%;
+      overflow:hidden;
+    }
+
+    #carouselInner ul.column {
+      /*
+      width:605px;
+      height:105px;
+      */
+      width:900px;
+      height:300px;
+      /*
+      padding:15px 0 15px 15px;
+      */
+      padding:0px 0px 15px 15px;
+      list-style-type:none;
+      float:left;
+    }
+
+    #carouselInner ul.column li {
+      float:left;
+      margin-right:10px;
+      display:inline;
+    }
+
+    #carouselInner ul.column li img {
+      border:none;
+    }
+
+
+/*　新着情報 */
+    #update p{
+      background-color: #474655;
+      border-left: 8px solid #C97556;
+      color: #E1E2CF;
+      font-size: 20px;
+      height:22px ;
+      /*width: 122px;*/
+      width:662px;
+      padding:0px 0px 0px 20px;
+    }   
+
+/* 新着情報の中身  */
+    dl.box{
+      background-color: #E1E2CF;
+      height: 275px;
+      overflow: auto;
+      width:670px;
+      /*position:absolute;*/
+      padding: 15px 10px 10px 10px;
+      }
+
+/* 日付 */
+    dl.box dt{
+      float: left;
+      width: 120px;
+    }
+
+/* タイトル  */
+    dl.box dd{
+      margin: 0 0 10px 0;
+      padding: 0 0 10px 120px;
+      border-bottom: 1px dotted #aaa;
+    }
+
