@@ -23,7 +23,7 @@
 
    //処理
 
-   $sql = "SELECT detail FROM hatugen /*WHERE id_hatugen = 19*/";
+   $sql = "SELECT detail FROM hatugen WHERE id_hatugen != 1";
    $stmt = $dbh->query($sql);
    foreach( $stmt->fetchAll( PDO::FETCH_ASSOC ) as $test_auto ){
       $text = print_r($test_auto['detail'], TRUE);
@@ -31,7 +31,6 @@
       //切断
       $dbh = null;
   
-      //$text = "私は関西大学総合情報学部に所属しています。関西外国語大学に所属しています。あなたのお名前は何ですか。関西大学。情報。情報。情報。うんこ、魂、喜びラブライブ、因縁、憎しみ憎しみ憎しみ嫌い嫌い嫌い鬱、鬱、鬱アメリカアメリカシラサギFラン大学の学園祭ラッスンゴレライ";
       $exe_path = '/usr/local/bin/mecab';
 
       /////pipe処理/////
@@ -56,31 +55,49 @@
 
    /////count処理/////
    exec("$exe_path $text", $result);
-   $word_list_index = $word_list = array();
+   $word_list_index = $word_list = $tmp_detail = $tmp = array();
 foreach ($result as $val) {
   $tmp = explode(",", $val);
-  print_r($tmp);
-  echo "<pre>";
-  //if ($tmp[1] === '非自立' || $tmp[1] === '形容動詞語幹' || $tmp[1] === '代名詞' || $tmp[1] === '副詞可能') {
-    // continue;
-  //}
+  if ($tmp[1] === '非自立' || $tmp[1] === '代名詞' || $tmp[1] === '副詞可能') {
+     continue;
+  }
+
+  //print_r($tmp);
+  //echo"<pre>";
 
   /*
-  $negative_type_index = array("非自立", "形容動詞語幹", "代名詞", "副詞可能");
+  $negative_type_index = array("非自立", "代名詞", "副詞可能");
   foreach( $negative_type_list_index as $negative_type_list ){
      if ($tmp[1] === $negative_type_list) {
         continue;
      }
-  }
-  */
+  }*/
 
-  //$tmp = explode("\t", $tmp[0]);// $tmp[0]: 要素, $tmp[1]: 品詞
-  if ($tmp[1] == '名詞') {
+     $tmp_detail = $tmp[1];
+     $tmp = explode("\t", $tmp[0]);// $tmp[0]: 要素, $tmp[1]: 品詞
+     $tmp[2] = $tmp_detail;
+
+        if( $tmp[0] == NULL || $tmp[2] == '  名詞' ){
+           $tmp[0] = ',';
+           $tmp[1] = 'test';
+           $tmp[2] = '名詞';
+        }
+        if( $tmp[2] == '数' ){
+           $tmp[0] = mb_convert_kana( $tmp[0], "KVa" );
+        }
+
+        //print_r($tmp);
+        //echo "<pre>";
+
+  if( $tmp[1] == '名詞' || $tmp[2] == '数接続' || $tmp[2] == '名詞接続' || $tmp[2] == '名詞' || $tmp[0] == '・' ) {
      $integrated_word .= $tmp[0];
-  } else {
-     $negative_word_list_index = array("議員", "問目", "点目", "質問");
+  }else if( $tmp[1] == '動詞' ){
+     $integrated_word .= $tmp[0];
+     unset( $integrated_word );
+  }else{
+     $negative_word_list_index = array("議員", "問目", "点目", "質問", "お願い", "お答え", "お尋ね", "ご答弁", "平成", ",", "お考え");
      foreach( $negative_word_list_index as $negative_word_list){
-        if( strpos( $integrated_word, $negative_word_list ) !== false){
+        if( strpos( $integrated_word, $negative_word_list ) !== false ){
            $integrated_word = NULL;
         }
      }
@@ -91,8 +108,6 @@ foreach ($result as $val) {
       } else {// 既出
         $word_list[$key]['num'] = $word_list[$key]['num'] + 1;
       }
-     //print_r($integrated_word);
-     //echo "<pre>";
      $integrated_word = NULL;
   }
 
@@ -101,7 +116,8 @@ foreach ($result as $val) {
    
    arsort($word_list);
 
-   //print_r($word_list);
+
+
    $test[] = array("count","word");
    
    foreach ($word_list as $val) {  
@@ -109,11 +125,11 @@ foreach ($result as $val) {
    }
    
 
-/*echo '<table ncurses_border(left, right, top, bottom, tl_corner, tr_corner, bl_corner, br_corner)r="1" cellpadding="5">';
+echo '<table ncurses_border(left, right, top, bottom, tl_corner, tr_corner, bl_corner, br_corner)r="1" cellpadding="5">';
 foreach ($word_list as $val) {
   echo "<tr><td>{$val['num']}</td><td>{$val['word']}</td></tr>\n";
 }
-echo "</table>";*/
+echo "</table>";
 
    $fp = fopen('text.csv', 'w');
    
@@ -129,7 +145,7 @@ echo "</table>";*/
     <script type="text/javascript" src="js/wc.js"></script>
 
     <script>
-    /*  var file = 'text.csv';
+      var file = 'text.csv';
 
       d3.csv(file, function(data){
         data = data.splice(0, 250);
@@ -145,7 +161,7 @@ echo "</table>";*/
         .padding(5)
         .rotate(function() { return ~~(Math.random() * 2) * 90; })
         .font("Impact")
-        .fontSize(function(d) { return Math.sqrt(d.size) * 50; })
+        .fontSize(function(d) { return Math.sqrt(d.size) * 10; })
         .on("end", draw)
         .start();
 
@@ -178,7 +194,7 @@ echo "</table>";*/
              d3.select(this).style({opacity: '1.0'});
           })
         };
-      });*/
+      });
     </script>
   
   </body>
