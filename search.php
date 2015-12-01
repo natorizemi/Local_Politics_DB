@@ -11,7 +11,7 @@
 
    //処理
 
-   $result = $_GET['search'];
+   $result = $_POST['search'];
 
    if( empty( $result ) ) {
       echo "type word!";
