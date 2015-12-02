@@ -144,6 +144,8 @@ unset( $word_list[0] );
    unset($word_list_index);
    
    arsort($word_list);
+   $num = current( $word_list );
+   #$num = print_r($first['num']);
 
    $test[] = array("count","word");
    
@@ -175,20 +177,33 @@ echo "</table>";
       var file = 'text.csv';
 
       d3.csv(file, function(data){
-        data = data.splice(0, 250);
+        var data = data.splice(0, 250);
+
+        var max_num = <?php print_r( $num['num'] ); ?>;
+
+        //要変更
+        if( max_num <= 10 ){
+           var num = 100;
+        }else if( max_num <= 20 ){
+           var num = 10;
+        }else if( max_num <= 30 ){
+           var num = 5;
+        }else{
+           var num = 1;
+        };
 
         var width = window.innerWidth;
         var height = window.innerHeight;
-        fill = d3.scale.category20(),
-        maxcount = d3.max(data, function(d){ return d.count; } ),
-        wordcount = data.map(function(d) { return {text: d.word, size: d.count / maxcount * 10}; });
+        var fill = d3.scale.category20();
+        var maxcount = d3.max(data, function(d){ return d.count; } );
+        var wordcount = data.map(function(d) { return {text: d.word, size: d.count / maxcount * 10}; });
 
         d3.layout.cloud().size([width, height])
         .words(wordcount)
         .padding(5)
         .rotate(function() { return ~~(Math.random() * 2) * 90; })
         .font("Impact")
-        .fontSize(function(d) { return Math.sqrt(d.size) * 10; })
+        .fontSize(function(d) { return Math.sqrt(d.size) * num; })
         .on("end", draw)
         .start();
 
