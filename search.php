@@ -86,9 +86,7 @@
       $name = print_r($test_auto['name'], TRUE);
       $detail = print_r($test_auto['detail'], TRUE);
 
-      $integrated = $name .= $detail;
-
-      if((( strpos($name, $key[0])) !== false ) && strpos($detail, $key[1])){
+      if((( strpos($name, $key[0])) !== false ) && (strpos($detail, $key[1]) !== false )){
          echo "<br>";
          print_r($name);
          echo "<br>";
@@ -100,6 +98,8 @@
    }
       $dbh = null;
    }
+
+   #top();
 
 $file_name = $_SERVER["SCRIPT_NAME"];
 $file_name = str_replace( '/lp/', '', $file_name );
