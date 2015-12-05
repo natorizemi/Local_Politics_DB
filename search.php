@@ -79,6 +79,28 @@
       }
       $result = mb_convert_kana( $result, 's' );
       $key = explode( ' ', $result );
+      $key_ctr = 0;
+      $key_ctr = count( $key );
+
+
+         /*$test = $etc = array();
+
+         foreach( $key as $val ){
+         $text = "関西大学、田村集中集中";
+         print_r($val);
+         $pos = strpos( $text, $val );
+         if( $pos !== false ){
+            $ctr += 1;
+         };
+         array_push( $test, $val );
+         echo "<br>";
+         $counter = count($test);
+         }
+         print_r($test);
+         echo "<br>";
+         echo $counter;
+         echo "<br>";
+         echo $ctr;*/
 
    $sql = "SELECT * FROM hatugen INNER JOIN people_info ON hatugen.id_people_info = people_info.id_people_info";
    $stmt = $dbh->query($sql);
@@ -86,20 +108,31 @@
       $name = print_r($test_auto['name'], TRUE);
       $detail = print_r($test_auto['detail'], TRUE);
 
-      if((( strpos($name, $key[0])) !== false ) && (strpos($detail, $key[1]) !== false )){
-         echo "<br>";
-         print_r($name);
-         echo "<br>";
-         print_r($detail);
-         echo "<br>";
+      $int_ctr = 0;
+
+      $integrated = $name.$detail;
+
+      foreach( $key as $val ){
+         $pos = strpos( $integrated, $val );
+         if( $pos !== false ){
+            $int_ctr += 1;
+         };
+      }
+
+      if( $key_ctr === $int_ctr ){
+            print_r($name);
+            echo "<br>";
+            print_r($detail);
+            echo "<br>";
       }else{
          continue;
       }
+
    }
       $dbh = null;
    }
 
-   #top();
+   top();
 
 $file_name = $_SERVER["SCRIPT_NAME"];
 $file_name = str_replace( '/lp/', '', $file_name );
