@@ -1,0 +1,67 @@
+@charset "utf-8";
+/* CSS Document */
+
+html{
+  height:100%;
+}
+
+body{
+  height:100%;
+}
+
+body #wrapper{
+  min-height: 100%;
+}
+
+/* 中央配置 */
+    body {  
+      background-color: black;
+      }
+
+    div#wrapper {  
+        width: 960px;  
+        height:100%;
+        margin: 0 auto;  
+        text-align: left; 
+    }
+
+
+/* トップ画像 */
+    img.top{
+       width: 270px;
+       height: 80px;
+    }
+
+/* menu
+    #menu ul{ 
+       position: relative;
+       left: 50%;
+       float:left;
+    }
+
+    #menu li{ 
+       display:inline;
+       
+       position: relative;
+       left: -50%;
+       float:left;
+    }
+
+    #menu li a{
+       display: block; 
+       border-left: 8px solid #C97556;
+       background-color: #474655;
+       padding: 3px 10px;
+       text-decoration: none;
+       color: #E1E2CF;
+       width: 170px;
+       padding: 7px;
+       font-size: 16px;
+    }
+
+    #menu li a:hover{
+       border-left: 8px solid #990033;
+       background-color: #474655;
+       display: block; 
+       text-decoration: underline;
+    } */
