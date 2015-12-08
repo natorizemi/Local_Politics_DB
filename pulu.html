@@ -1,0 +1,18 @@
+
+<html>
+<head><meta charset="UTF-8" /></head>
+<body>
+<form action="pulu.php" method="post"> <!-- ここに移動 -->
+    <select name="data">
+        <option value="27205">吹田</option>
+        <option value="27206">泉大津</option>
+        <option value="27207">高槻</option>
+    </select>
+　　<input type="submit" value="送信" />
+</form>
+
+<?php echo '送信データ：' . $_POST['data'] ?>
+	
+</form>
+</body>
+</html>
