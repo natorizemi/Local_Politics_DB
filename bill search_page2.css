@@ -32,36 +32,8 @@ body #wrapper{
        height: 80px;
     }
 
-/* menu
-    #menu ul{ 
-       position: relative;
-       left: 50%;
-       float:left;
-    }
-
-    #menu li{ 
-       display:inline;
-       
-       position: relative;
-       left: -50%;
-       float:left;
-    }
-
-    #menu li a{
-       display: block; 
-       border-left: 8px solid #C97556;
-       background-color: #474655;
-       padding: 3px 10px;
-       text-decoration: none;
-       color: #E1E2CF;
-       width: 170px;
-       padding: 7px;
-       font-size: 16px;
-    }
-
-    #menu li a:hover{
-       border-left: 8px solid #990033;
-       background-color: #474655;
-       display: block; 
-       text-decoration: underline;
-    } */
+/* 議員一覧 */
+  div.list{
+    font-family: serif;
+    font-size: 1.5em;
+  }
