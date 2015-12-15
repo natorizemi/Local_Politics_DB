@@ -1,5 +1,5 @@
 <?php
-#table name を二ヶ所変更の必要があり
+#table name を二ヶ所変更する必要があり
 
 function member(){
 
@@ -13,7 +13,6 @@ function member(){
    }
 
   // ディレクトリのパスを記述
-  #$dir = "/Users/Akira/Desktop/test/";
   $dir = "/Applications/XAMPP/xamppfiles/htdocs/lp/import_folder/";
   $ctr = 0;
 
@@ -77,7 +76,6 @@ function bill(){
    }
 
   // ディレクトリのパスを記述
-  #$dir = "/Users/Akira/Desktop/test/";
   $dir = "/Applications/XAMPP/xamppfiles/htdocs/lp/import_folder/";
   $ctr = 0;
 
@@ -86,18 +84,20 @@ function bill(){
         while( ($file = readdir( $handle )) !== false){
            $path = scandir( $dir );
         }
-        print_r( $path );
-        echo "<br>";
+        
         foreach( $path as $val ){
-          if( strpos( $val, "csv" )){
-
-           $fp = fopen( $val, "r" );
-           #$val = mb_convert_encoding( $val, "UTF-8" );
-           print_r( $val );
-           echo "<br>";
-          }
-
-
+           $pos = strpos( $val, ".csv" );
+           if( $pos === false ){
+              continue;
+           }else{
+              $fp = fopen( $val, "r+" );#rのみだと読み込みopenなためr+にする
+              $text = file_get_contents( "$val" );
+              $convert = mb_convert_encoding( $text, "UTF-8", "sjis-win" );
+              fwrite( $fp, $convert );
+              fclose( $fp );
+           }
+              print_r( $val );
+              echo "<br>";
 
         $sql = "CREATE TABLE `bill`(
         `test0` VARCHAR(255),
@@ -113,21 +113,115 @@ function bill(){
         `test10` BIGINT
         ) DEFAULT CHARSET=utf8";
 
-   #mysql_query('set names sjis');
-   #mysql_set_charset( "utf8" );
    $dbh->query( $sql );
    $dbh->query("LOAD DATA LOCAL INFILE '$val' INTO TABLE bill FIELDS TERMINATED BY ',' IGNORE 1 LINES");
-           /*while( !feof( $fp )){
-              $line = fgets( $fp );
-              #print_r( $line );
+           #while( !feof( $fp )){
+            #  $line = fgets( $fp );
+             # #print_r( $line );
               #echo "<br>";
-           }*/
+           #}
+
         }
   }
-
-    fclose( "$fp" );
 }
 
 bill();
+
+    ?>
+
+    <?php
+#table name を二ヶ所変更する必要があり
+
+/*function bill(){
+
+   try{
+      $dbh = new PDO('mysql:host=localhost;dbname=natori_web_02', 'root', 'gai0730',
+             array(PDO::MYSQL_ATTR_LOCAL_INFILE => true));
+      $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+   }catch(PDOException $e){
+      var_dump($e->getMessage());
+      exit;
+   }
+
+
+   $sql = "SHOW TABLES";
+   $stmt = $dbh->query($sql);
+   foreach( $stmt->fetchAll( PDO::FETCH_ASSOC ) as $test_auto ){
+      $tables[] = print_r( $test_auto['Tables_in_natori_web_02'], TRUE );
+   }
+  // ディレクトリのパスを記述
+  $dir = "/Applications/XAMPP/xamppfiles/htdocs/lp/import_folder/";
+  $ctr = 0;
+
+  // ディレクトリの存在を確認し、ハンドルを取得
+  if( is_dir( $dir ) && $handle = opendir( $dir ) ) {
+        while( ($file = readdir( $handle )) !== false){
+           $path = scandir( $dir );
+        }
+        
+        foreach( $path as $val ){
+           $pos = strpos( $val, ".csv" );
+           if( $pos === false ){
+              continue;
+           }else{
+              $fp = fopen( $val, "r+" );#rのみだと読み込みopenなためr+にする
+              $text = file_get_contents( "$val" );
+              $convert = mb_convert_encoding( $text, "UTF-8", "sjis-win" );
+              fwrite( $fp, $convert );
+              fclose( $fp );
+           }
+              print_r( $val );
+              echo "<br>";
+
+           foreach( $tables as $tbname ){
+              echo $tbname;
+              $table_pos = strpos( $tbname, "bill" );
+              if( $table_pos === false ){
+
+        $sql = "CREATE TABLE `bill`(
+        `test0` VARCHAR(255),
+        `test1` BIGINT,
+        `test2` BIGINT,
+        `test3` BIGINT,
+        `test4` BIGINT,
+        `test5` VARCHAR(255),
+        `test6` VARCHAR(255),
+        `test7` VARCHAR(255),
+        `test8` VARCHAR(255),
+        `test9` BIGINT,
+        `test10` BIGINT
+        ) DEFAULT CHARSET=utf8";
+
+   $dbh->query( $sql );
+   $dbh->query("LOAD DATA LOCAL INFILE '$val' INTO TABLE bill FIELDS TERMINATED BY ',' IGNORE 1 LINES");
+           
+              }else{
+
+   $dbh->query( $sql );
+   $dbh->query("LOAD DATA LOCAL INFILE '$val' INTO TABLE bill FIELDS TERMINATED BY ',' IGNORE 1 LINES");
+
+              }
+           }
+           
+           
+
+
+           #while( !feof( $fp )){
+            #  $line = fgets( $fp );
+             # #print_r( $line );
+              #echo "<br>";
+           #}
+
+        }
+  }
+
+  $dbh = NULL;
+
+}
+
+bill();*/
+
+
+
 
     ?>
