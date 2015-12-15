@@ -128,7 +128,7 @@ function bill(){
             echo "<br>";
 
           }else{
-            echo "同じtableに対して2度目以上のimportのためinsertができません。";
+            echo "同じtableに対して2度以上のimportのためinsertができません。";
           }
       }
    }
