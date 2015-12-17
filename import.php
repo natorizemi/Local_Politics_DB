@@ -1,6 +1,6 @@
 <?php
 
-#table name を三ヶ所変更する必要があり
+#table name 変更する必要があり
 
 function member(){
 
@@ -15,10 +15,9 @@ function member(){
 
   // ディレクトリのパスを記述
   $dir = "/Applications/XAMPP/xamppfiles/htdocs/lp/import_folder/";
-  $ctr = 0;
 
   // ディレクトリの存在を確認し、ハンドルを取得
-  if( is_dir( $dir ) && $handle = opendir( $dir ) ) {
+     if( is_dir( $dir ) && $handle = opendir( $dir ) ) {
         while( ($file = readdir( $handle )) !== false){
            $path = scandir( $dir );
         }
@@ -58,8 +57,8 @@ function member(){
               #print_r( $line );
               #echo "<br>";
            }*/
-        }
-  }
+      }
+   }
 
     fclose( "$fp" );
 }
@@ -76,62 +75,124 @@ function bill(){
    }
 
   // ディレクトリのパスを記述
-  $dir = "/Applications/XAMPP/xamppfiles/htdocs/lp/import_folder/";
-  $ctr = 0;
+   $dir = "/Applications/XAMPP/xamppfiles/htdocs/lp/import_folder/";
+
+   if( is_dir( $dir ) && $handle = opendir( $dir ) ) {
+      while( ($file = readdir( $handle )) !== false){
+         $path = scandir( $dir );
+      }
+
+     require_once '/Users/Akira/Desktop/PHPExcel_1.8.0_doc/Classes/PHPExcel.php';
+     require_once '/Users/Akira/Desktop/PHPExcel_1.8.0_doc/Classes/PHPExcel/IOFactory.php';
+ 
+#xlsx to csv
+      foreach( $path as $val ){
+         $pos = strpos( $val, ".xlsx" );
+         if( $pos === false ){
+            continue;
+         }else{
+            $text = file_get_contents( "$val" );
+            $encode = mb_detect_encoding($text);
+
+            $reader = PHPExcel_IOFactory::createReader( 'Excel2007' );
+            $reader->setReadDataOnly( true );
+            $PHPExcel = $reader->load( $val );
+
+            $writer = PHPExcel_IOFactory::createWriter( $PHPExcel, 'csv' );
+            $val = str_replace( "xlsx", "csv", $val );
+            $writer->save( $val );
+            $text = NULL;
+         }
+      }
+   }
 
   // ディレクトリの存在を確認し、ハンドルを取得
-  if( is_dir( $dir ) && $handle = opendir( $dir ) ) {
-     while( ($file = readdir( $handle )) !== false){
-        $path = scandir( $dir );
-     }
-        
+     if( is_dir( $dir ) && $handle = opendir( $dir ) ) {
+        while( ($file = readdir( $handle )) !== false){
+           $path = scandir( $dir );
+        }
+     
+#char code
+      foreach( $path as $val ){
+         $pos = strpos( $val, ".csv" );
+         $text = file_get_contents( "$val" );
+         $encode = mb_detect_encoding($text);
+         if( $pos === false ){
+            continue;
+         }else if( $encode === "SJIS" ){
+            $text = file_get_contents( "$val" );
+            $fp = fopen( $val, "w+" );
+            $convert = mb_convert_encoding( $text, "UTF-8", "sjis-win" );#sjis-winにする理由url:http://blog.livedoor.jp/loopus/archives/50160285.html, #iconv()もencoding関数
+            fwrite( $fp, $convert );
+            fclose( $fp );
+         }
+      }
+
       foreach( $path as $val ){
          $pos = strpos( $val, ".csv" );
          if( $pos === false ){
             continue;
          }else{
-            $fp = fopen( $val, "r+" );#rのみだと読み込みopenなためr+にする
             $text = file_get_contents( "$val" );
-            $convert = mb_convert_encoding( $text, "UTF-8", "sjis-win" );#sjis-winにする理由url:http://blog.livedoor.jp/loopus/archives/50160285.html, #iconv()もencoding関数
-            fwrite( $fp, $convert );
+            $text = str_replace( '"', '', $text );
+            $fp = fopen( $val, "w+" );#fopenの説明をよく見ること、設定で大分結果が違ってくる。fwriteにかなり関係する。
+            fwrite( $fp, $text );
             fclose( $fp );
+        
+            $sql = "SHOW TABLES";
+            $stmt = $dbh->query($sql);
+            $tables = "";
+            foreach( $stmt->fetchAll( PDO::FETCH_ASSOC ) as $test_auto ){
+               $tables .= print_r( $test_auto['Tables_in_natori_web_02'], TRUE );
+            }
+
+            $table_pos = strpos( $tables, "bill" );
+            if( $table_pos === false ){
+               $sql = "CREATE TABLE `bill`(
+                  `test0` VARCHAR(255),
+                  `test1` BIGINT,
+                  `test2` BIGINT,
+                  `test3` BIGINT,
+                  `test4` BIGINT,
+                  `test5` VARCHAR(255),
+                  `test6` VARCHAR(255),
+                  `test7` VARCHAR(255),
+                  `test8` VARCHAR(255),
+                  `test9` BIGINT,
+                  `test10` BIGINT,
+                  `test11` BIGINT,
+                  `test12` varchar(255),
+                  `test13` bigint
+               )DEFAULT CHARSET=utf8";
+
+               $dbh->query( $sql );
+               $dbh->query("LOAD DATA LOCAL INFILE '$val' INTO TABLE bill FIELDS TERMINATED BY ',' IGNORE 1 LINES");
+
+               print_r( $val );
+               echo " がimportされました!";
+               echo "<br>";
+               echo "<br>";
+               print_r( $text );
+               echo "<br>";
+               echo "<br>";
+
+            }else{
+
+               $dbh->query("LOAD DATA LOCAL INFILE '$val' INTO TABLE bill FIELDS TERMINATED BY ',' IGNORE 1 LINES");
+
+               print_r( $val );
+               echo " がimportされました!";
+               echo "<br>";
+               print_r( $text );
+               echo "<br>";
+               echo "<br>";
+
+            }
          }
-
-         $sql = "SHOW TABLES";
-         $stmt = $dbh->query($sql);
-         $tables = "";
-         foreach( $stmt->fetchAll( PDO::FETCH_ASSOC ) as $test_auto ){
-            $tables .= print_r( $test_auto['Tables_in_natori_web_02'], TRUE );
-         }
-
-         $table_pos = strpos( $tables, "bill" );
-         if( $table_pos === false ){
-            $sql = "CREATE TABLE `bill`(
-            `test0` VARCHAR(255),
-            `test1` BIGINT,
-            `test2` BIGINT,
-            `test3` BIGINT,
-            `test4` BIGINT,
-            `test5` VARCHAR(255),
-            `test6` VARCHAR(255),
-            `test7` VARCHAR(255),
-            `test8` VARCHAR(255),
-            `test9` BIGINT,
-            `test10` BIGINT
-            ) DEFAULT CHARSET=utf8";
-
-            $dbh->query( $sql );
-            $dbh->query("LOAD DATA LOCAL INFILE '$val' INTO TABLE bill FIELDS TERMINATED BY ',' IGNORE 1 LINES");
-
-            print_r( $val );
-            echo " がimportされました!";
-            echo "<br>";
-
-          }else{
-            echo "同じtableに対して2度以上のimportのためinsertができません。";
-          }
       }
    }
 }
+
+bill();
 
     ?>
