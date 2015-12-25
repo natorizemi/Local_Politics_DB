@@ -23,13 +23,26 @@
 
    //処理
 
-   $sql = "SELECT detail FROM hatugen WHERE id_hatugen != 1";
+   $search = $_POST['search'];
+
+   $sql = "SELECT * FROM hatugen INNER JOIN people_info ON hatugen.id_people_info = people_info.id_people_info";
    $stmt = $dbh->query($sql);
    foreach( $stmt->fetchAll( PDO::FETCH_ASSOC ) as $test_auto ){
-      $text = print_r($test_auto['detail'], TRUE);
+      $name = print_r($test_auto['name'], TRUE);
+      $detail = print_r($test_auto['detail'], TRUE);
+
+      if( strpos( $name, $search ) !==false ){
+         $text .= $detail;
+
+         #print_r($text);
+         #echo "<br>";
 
       //切断
       $dbh = null;
+     }
+   }
+
+
   
       $exe_path = '/usr/local/bin/mecab';
 
@@ -51,19 +64,28 @@
          fclose($pipes[1]);
          proc_close($process);
       }
-   }
+
+   $text = mb_convert_kana( $text, s );
+   $text = trim($text, " ");
+
+   print_r($text);
+   echo "<br>";
 
    /////count処理/////
    exec("$exe_path $text", $result);
    $word_list_index = $word_list = $tmp_detail = $tmp = array();
 foreach ($result as $val) {
   $tmp = explode(",", $val);
+
+  #print_r($tmp);
+  #echo "<br>";
+
   if ($tmp[1] === '非自立' || $tmp[1] === '代名詞' || $tmp[1] === '副詞可能') {
      continue;
   }
 
-  //print_r($tmp);
-  //echo"<pre>";
+  #print_r($tmp);
+  #echo"<pre>";
 
   /*
   $negative_type_index = array("非自立", "代名詞", "副詞可能");
@@ -86,20 +108,25 @@ foreach ($result as $val) {
            $tmp[0] = mb_convert_kana( $tmp[0], "KVa" );
         }
 
-        //print_r($tmp);
-        //echo "<pre>";
+
+
+        #print_r($tmp);
+        #echo "<pre>";
 
   if( $tmp[1] == '名詞' || $tmp[2] == '数接続' || $tmp[2] == '名詞接続' || $tmp[2] == '名詞' || $tmp[0] == '・' ) {
      $integrated_word .= $tmp[0];
-  }else if( $tmp[1] == '動詞' ){
-     $integrated_word .= $tmp[0];
-     unset( $integrated_word );
+  #}else if( $tmp[1] == '動詞' ){
+   #  $integrated_word .= $tmp[0];
+    # unset( $integrated_word );
   }else{
-     $negative_word_list_index = array("議員", "問目", "点目", "質問", "お願い", "お答え", "お尋ね", "ご答弁", "平成", ",", "お考え");
+     $negative_word_list_index = array("議員", "問目", "点目", "質問", "お願い", "お答え", "お尋ね", "ご答弁", "平成", "お考え", "ご説明", "ページ", "ご指摘");
      foreach( $negative_word_list_index as $negative_word_list){
         if( strpos( $integrated_word, $negative_word_list ) !== false ){
            $integrated_word = NULL;
         }
+     }
+     if( $integrated_word === "," ){
+        $integrated_word = NULL;
      }
      $key = array_search($integrated_word, $word_list_index);
      if ($key === false) {// 新出
@@ -110,17 +137,19 @@ foreach ($result as $val) {
       }
      $integrated_word = NULL;
   }
-
 }
+unset( $word_list[0] );
+#print_r($word_list);
+
    unset($word_list_index);
    
    arsort($word_list);
-
-
+   $num = current( $word_list );
+   #$num = print_r($first['num']);
 
    $test[] = array("count","word");
    
-   foreach ($word_list as $val) {  
+   foreach ($word_list as $val) {
     $test[] = array("{$val['num']}", "{$val['word']}");
    }
    
@@ -148,20 +177,33 @@ echo "</table>";
       var file = 'text.csv';
 
       d3.csv(file, function(data){
-        data = data.splice(0, 250);
+        var data = data.splice(0, 250);
+
+        var max_num = <?php print_r( $num['num'] ); ?>;
+
+        //要変更
+        if( max_num <= 10 ){
+           var num = 100;
+        }else if( max_num <= 20 ){
+           var num = 10;
+        }else if( max_num <= 30 ){
+           var num = 5;
+        }else{
+           var num = 1;
+        };
 
         var width = window.innerWidth;
         var height = window.innerHeight;
-        fill = d3.scale.category20(),
-        maxcount = d3.max(data, function(d){ return d.count; } ),
-        wordcount = data.map(function(d) { return {text: d.word, size: d.count / maxcount * 10}; });
+        var fill = d3.scale.category20();
+        var maxcount = d3.max(data, function(d){ return d.count; } );
+        var wordcount = data.map(function(d) { return {text: d.word, size: d.count / maxcount * 10}; });
 
         d3.layout.cloud().size([width, height])
         .words(wordcount)
         .padding(5)
         .rotate(function() { return ~~(Math.random() * 2) * 90; })
         .font("Impact")
-        .fontSize(function(d) { return Math.sqrt(d.size) * 10; })
+        .fontSize(function(d) { return Math.sqrt(d.size) * num; })
         .on("end", draw)
         .start();
 
