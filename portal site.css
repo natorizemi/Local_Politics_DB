@@ -186,7 +186,7 @@ body #wrapper{
     dl.box{
       background-color: #E1E2CF;
       height: 130px;
-      overflow: auto;
+      /*overflow: auto;*/
       width:500px;
       /*position:absolute;*/
       padding: 15px 10px 10px 10px;
