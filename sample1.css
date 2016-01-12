@@ -1,0 +1,59 @@
+@charset "utf-8";
+
+html{
+    height:100%;
+}
+body{
+    height:100%;
+}
+body #wrapper{
+    min-height: 100%;
+}
+/* 中央配置 */
+body{
+    background-color: black;
+}
+div #wrapper{
+    width:960px;
+    height:100%;
+    margin:0 auto;
+    text-align:left;
+}
+
+label {
+    background: gray;
+    color: #fff;
+    padding: 10px;
+    display: block;
+    margin: 0;
+    border: 1px solid #fff;
+    width:25%;
+}
+
+input[type="checkbox"].on-off{
+    display: none;
+}
+
+.menu ul {
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.menu li {
+    padding: 5px;
+}
+
+input[type="checkbox"].on-off + ul{
+    height: 0;
+    overflow: hidden;
+}
+
+input[type="checkbox"].on-off:checked + ul{
+    height: 200px;
+}

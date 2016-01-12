@@ -8,7 +8,14 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
  </head> 
 
- <body>
+ <body  style="background-color:black">
+  
+<div id="wrapper">
+<div style="background:linear-gradient(white, gray);background-repeat: no-repeat;background-attachment: fixed; background-size: cover; height:100%;" >
+
+
+    <a href="portal site.html"><img src="img/top_img1.png" class="top"></a>
+
 <?php
 $link = mysql_connect('localhost', 'root', '');
 
