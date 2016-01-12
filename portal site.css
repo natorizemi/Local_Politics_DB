@@ -178,16 +178,16 @@ body #wrapper{
       font-size: 20px;
       height:22px ;
       /*width: 122px;*/
-      width:662px;
+      width:492px;
       padding:0px 0px 0px 20px;
     }   
 
 /* 新着情報の中身  */
     dl.box{
       background-color: #E1E2CF;
-      height: 275px;
+      height: 130px;
       overflow: auto;
-      width:670px;
+      width:500px;
       /*position:absolute;*/
       padding: 15px 10px 10px 10px;
       }
