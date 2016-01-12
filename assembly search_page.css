@@ -1,0 +1,39 @@
+@charset "utf-8";
+/* CSS Document */
+
+html{
+  height:100%;
+}
+
+body{
+  height:100%;
+}
+
+body #wrapper{
+  min-height: 100%;
+}
+
+/* 中央配置 */
+    body {  
+      background-color: black;
+      }
+
+    div#wrapper {  
+        width: 960px;  
+        height:100%;
+        margin: 0 auto;  
+        text-align: left; 
+    }
+
+
+/* トップ画像 */
+    img.top{
+       width: 270px;
+       height: 80px;
+    }
+
+/* 議員一覧 */
+  div.list{
+    font-family: serif;
+    font-size: 1.5em;
+  }
